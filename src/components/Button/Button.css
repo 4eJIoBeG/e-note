@@ -5,11 +5,12 @@
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #646cff;
   color: white;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-.accent:hover {
-  border-color: #646cff;
+
+.button:hover {
+  background-color: #545ad4;
 }
