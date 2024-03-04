@@ -1,6 +1,7 @@
 .journal-add {
   padding: 10px;
   display: flex;
+
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -12,6 +13,7 @@
 }
 
 .journal-add-img {
+  color: bisque;
   width: 16px;
   height: 16px;
 }

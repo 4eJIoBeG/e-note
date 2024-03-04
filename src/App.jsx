@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import JournalAddButton from "./components/JournalAddButton/JournalAddButton";
@@ -7,23 +7,26 @@ import JournalList from "./components/JournalList/JournalList";
 import Body from "./layouts/Body/Body";
 import LeftPanel from "./layouts/LeftPanel/LeftPanel";
 
-const INITIAL_DATA = [
-  // {
-  //   id: 1,
-  //   title: "Заголовок 1",
-  //   text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //   date: new Date(),
-  // },
-  // {
-  //   id: 2,
-  //   title: "Заголовок 2",
-  //   text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //   date: new Date(),
-  // },
-];
-
 function App() {
-  const [items, setItems] = useState(INITIAL_DATA);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("data"));
+    if (data) {
+      setItems(
+        data.map((item) => ({
+          ...item,
+          date: new Date(item.date),
+        })),
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (items.length) {
+      localStorage.setItem("data", JSON.stringify(items));
+    }
+  }, [items]);
 
   const addItem = (item) => {
     setItems((oldItems) => [
