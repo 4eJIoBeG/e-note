@@ -2,7 +2,7 @@ import "./JournalList.css";
 import CardButton from "../CardButton/CardButton";
 import JournalItem from "../JournalItem/JournalItem";
 
-const JournalList = ({ items }) => {
+const JournalList = ({ items, setItem }) => {
   if (items.length === 0) {
     return <p>Воспоминаний нет</p>;
   }
@@ -19,7 +19,7 @@ const JournalList = ({ items }) => {
     <div className="journal-list">
       {items.sort(sortItems).map((item) => {
         return (
-          <CardButton key={item.id}>
+          <CardButton key={item.id} onClick={() => setItem(item)}>
             <JournalItem title={item.title} text={item.text} date={item.date} />
           </CardButton>
         );

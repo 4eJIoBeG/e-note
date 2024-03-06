@@ -5,7 +5,7 @@ import cn from "classnames";
 import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 import Input from "../Input/Input";
 
-const JournalForm = ({ onSubmit }) => {
+const JournalForm = ({ onSubmit, data }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, isFormReadyToSubmit, values } = formState;
   const titleRef = useRef();
@@ -28,6 +28,13 @@ const JournalForm = ({ onSubmit }) => {
       }
     }
   };
+
+  useEffect(() => {
+    dispatchForm({
+      type: "SET_VALUE",
+      payload: { ...data },
+    });
+  }, [data]);
 
   useEffect(() => {
     let timerId;
@@ -84,7 +91,9 @@ const JournalForm = ({ onSubmit }) => {
           type="date"
           isValid={isValid.date}
           ref={dateRef}
-          value={values.date}
+          value={
+            values.date ? new Date(values.date).toISOString().slice(0, 10) : ""
+          }
           name="date"
           appearence="date"
           id="date"
