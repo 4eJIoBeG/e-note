@@ -5,7 +5,7 @@ import cn from "classnames";
 import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 import Input from "../Input/Input";
 
-const JournalForm = ({ onSubmit, data }) => {
+const JournalForm = ({ onSubmit, data, onDelete }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, isFormReadyToSubmit, values } = formState;
   const titleRef = useRef();
@@ -30,6 +30,9 @@ const JournalForm = ({ onSubmit, data }) => {
   };
 
   useEffect(() => {
+    if (!data) {
+      dispatchForm({ type: "CLEAR" });
+    }
     dispatchForm({
       type: "SET_VALUE",
       payload: { ...data },
@@ -68,9 +71,14 @@ const JournalForm = ({ onSubmit, data }) => {
     dispatchForm({ type: "SUBMIT" });
   };
 
+  const deleteJournalItem = () => {
+    onDelete(data.id);
+    dispatchForm({ type: "CLEAR" });
+  };
+
   return (
     <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-      <div>
+      <div className={styles["form-row"]}>
         <Input
           type="text"
           name="title"
@@ -81,6 +89,15 @@ const JournalForm = ({ onSubmit, data }) => {
           onChange={onChange}
           placeholder="Заголовок"
         />
+        {data?.id && (
+          <button
+            className={styles["delete"]}
+            type="button"
+            onClick={deleteJournalItem}
+          >
+            <img src="./remove.svg" alt="кнопка удалить" />
+          </button>
+        )}
       </div>
       <div className={styles["form-row"]}>
         <label htmlFor="date" className={styles["form-label"]}>
@@ -130,7 +147,7 @@ const JournalForm = ({ onSubmit, data }) => {
           [styles["invalid"]]: !isValid.text,
         })}
       ></textarea>
-      <Button text="Сохранить" />
+      <Button>Сохранить</Button>
     </form>
   );
 };
